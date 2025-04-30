@@ -15,8 +15,8 @@ d <- phylospatial(sdm, tree)
 
 
 # calculate alpha diversity, significance, and CANAPE
-div <- ps_diversity(d)
-sig <- ps_rand(d, n_rand = 999, n_cores = 8)
+div <- ps_diversity(d, metric = "PD")
+sig <- ps_rand(d, metric = c("PD", "PE", "RPE", "CE"), n_rand = 999, n_cores = 8)
 cnp <- ps_canape(sig)
 
 
@@ -39,9 +39,6 @@ con <- ps_prioritize(d,
 library(terra)
 library(tidyverse)
 library(patchwork)
-
-# run analyses
-source("code/phylospatial.R")
 
 # define custom theme
 thm <- theme_void() +
@@ -117,4 +114,4 @@ pcon <- con %>%
 # combine and save
 p <- pdiv + psig + pcnp + prgb + preg + pcon +
       plot_layout(nrow = 2)
-ggsave("figures/maps.png", p, width = 12, height = 10, units = "in")
+ggsave("figures/maps.png", p, width = 12, height = 10, units = "in", dpi = 500)
